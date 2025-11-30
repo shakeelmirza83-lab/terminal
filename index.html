@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuantPro Plus - Advanced Algo Trading</title>
+    <title>Quantum Pro Max - Ultimate Trading Platform</title>
     <style>
         * {
             margin: 0;
@@ -12,44 +12,204 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark-1: #0f172a;
+            --dark-2: #1e293b;
+            --dark-3: #334155;
+            --dark-4: #475569;
+            --light-1: #f8fafc;
+            --light-2: #e2e8f0;
+            --light-3: #cbd5e1;
+        }
+
         body {
-            background: #0f172a;
-            color: #e2e8f0;
+            background: var(--dark-1);
+            color: var(--light-2);
             height: 100vh;
             overflow: hidden;
         }
 
+        /* Authentication System */
+        .auth-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--dark-1) 0%, var(--dark-2) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .auth-box {
+            background: var(--dark-2);
+            border-radius: 16px;
+            padding: 40px;
+            width: 400px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--dark-3);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .auth-logo {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .auth-subtitle {
+            color: var(--light-3);
+            font-size: 14px;
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 24px;
+            background: var(--dark-3);
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .auth-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: var(--light-3);
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--dark-3);
+            border: 1px solid var(--dark-4);
+            border-radius: 8px;
+            color: var(--light-2);
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-footer {
+            margin-top: 24px;
+            text-align: center;
+        }
+
+        .btn-auth {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-auth:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .auth-switch {
+            margin-top: 16px;
+            font-size: 14px;
+            color: var(--light-3);
+        }
+
+        .auth-link {
+            color: var(--primary);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* Main Application */
+        .app-container {
+            display: none;
+            height: 100vh;
+            flex-direction: column;
+        }
+
         /* Enhanced Header */
         .header {
-            background: #1e293b;
-            border-bottom: 1px solid #334155;
-            height: 60px;
+            background: var(--dark-2);
+            border-bottom: 1px solid var(--dark-3);
+            height: 70px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 24px;
+            padding: 0 32px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
         }
 
-        .logo {
+        .app-logo {
             display: flex;
             align-items: center;
             gap: 12px;
             font-weight: 700;
-            font-size: 20px;
-            color: #3b82f6;
+            font-size: 24px;
+            color: var(--primary);
         }
 
         .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            border-radius: 6px;
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--success));
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: bold;
+            font-size: 18px;
         }
 
         .nav-tabs {
@@ -58,23 +218,24 @@
         }
 
         .nav-tab {
-            padding: 8px 16px;
-            background: #334155;
-            border-radius: 6px;
+            padding: 10px 20px;
+            background: var(--dark-3);
+            border-radius: 8px;
             cursor: pointer;
             font-size: 14px;
-            transition: all 0.2s;
+            font-weight: 500;
+            transition: all 0.3s;
         }
 
         .nav-tab.active {
-            background: #3b82f6;
+            background: var(--primary);
             color: white;
         }
 
         .user-menu {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 20px;
         }
 
         .connection-status {
@@ -82,61 +243,109 @@
             align-items: center;
             gap: 8px;
             font-size: 14px;
-            color: #10b981;
+            color: var(--success);
         }
 
         .status-dot {
             width: 8px;
             height: 8px;
-            background: #10b981;
+            background: var(--success);
             border-radius: 50%;
             animation: pulse 2s infinite;
         }
 
-        /* Enhanced Main Layout */
-        .container {
-            display: grid;
-            grid-template-columns: 300px 1fr 350px;
-            grid-template-rows: 1fr 280px;
-            height: calc(100vh - 60px);
-            gap: 1px;
-            background: #334155;
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
         }
 
-        /* Enhanced Left Sidebar */
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--success));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: var(--light-3);
+        }
+
+        /* Enhanced Main Layout */
+        .main-container {
+            display: grid;
+            grid-template-columns: 320px 1fr 380px;
+            grid-template-rows: 1fr 300px;
+            height: calc(100vh - 70px);
+            gap: 1px;
+            background: var(--dark-3);
+        }
+
+        /* Enhanced Sidebars */
         .sidebar {
-            background: #1e293b;
-            padding: 20px;
+            background: var(--dark-2);
+            padding: 24px;
             overflow-y: auto;
         }
 
         .section-title {
             font-size: 14px;
             font-weight: 600;
-            color: #94a3b8;
-            margin-bottom: 16px;
+            color: var(--light-3);
+            margin-bottom: 20px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        /* Strategy Cards with Enhanced Design */
+        .section-action {
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        /* Strategy Cards */
+        .strategy-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
         .strategy-card {
-            background: #334155;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 12px;
+            background: var(--dark-3);
+            border-radius: 12px;
+            padding: 20px;
             border-left: 4px solid;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
             position: relative;
         }
 
-        .strategy-card.running { border-left-color: #10b981; }
-        .strategy-card.paused { border-left-color: #f59e0b; }
-        .strategy-card.stopped { border-left-color: #ef4444; }
+        .strategy-card.running { border-left-color: var(--success); }
+        .strategy-card.paused { border-left-color: var(--warning); }
+        .strategy-card.stopped { border-left-color: var(--danger); }
 
         .strategy-card.active {
-            background: #1e40af;
+            background: var(--primary-dark);
             transform: translateX(4px);
         }
 
@@ -144,38 +353,39 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
         .strategy-name {
             font-weight: 600;
+            font-size: 15px;
             margin-bottom: 4px;
         }
 
         .strategy-type {
-            font-size: 11px;
-            color: #94a3b8;
-            background: #475569;
-            padding: 2px 6px;
-            border-radius: 10px;
+            font-size: 12px;
+            color: var(--light-3);
+            background: var(--dark-4);
+            padding: 4px 8px;
+            border-radius: 12px;
         }
 
         .strategy-stats {
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
-            color: #94a3b8;
+            font-size: 13px;
+            color: var(--light-3);
         }
 
-        .profit { color: #10b981; }
-        .loss { color: #ef4444; }
+        .profit { color: var(--success); }
+        .loss { color: var(--danger); }
 
         .strategy-actions {
             display: flex;
-            gap: 4px;
-            margin-top: 8px;
+            gap: 6px;
+            margin-top: 12px;
             opacity: 0;
-            transition: opacity 0.2s;
+            transition: opacity 0.3s;
         }
 
         .strategy-card:hover .strategy-actions {
@@ -183,90 +393,97 @@
         }
 
         .btn-icon {
-            padding: 4px 8px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 11px;
-            background: #475569;
-            color: #e2e8f0;
-        }
-
-        /* Enhanced Quick Actions */
-        .quick-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin: 16px 0;
-        }
-
-        .btn {
-            padding: 8px 12px;
+            padding: 6px 10px;
             border: none;
             border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
-            font-weight: 500;
-            transition: all 0.2s;
+            background: var(--dark-4);
+            color: var(--light-2);
+            transition: all 0.3s;
+        }
+
+        .btn-icon:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Enhanced Buttons */
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s;
         }
 
         .btn-primary {
-            background: #3b82f6;
+            background: var(--primary);
             color: white;
         }
 
         .btn-primary:hover {
-            background: #2563eb;
+            background: var(--primary-dark);
         }
 
         .btn-success {
-            background: #10b981;
+            background: var(--success);
             color: white;
         }
 
         .btn-warning {
-            background: #f59e0b;
+            background: var(--warning);
             color: white;
         }
 
         .btn-danger {
-            background: #ef4444;
+            background: var(--danger);
             color: white;
         }
 
-        /* Enhanced Parameters Panel */
+        /* Quick Actions Grid */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        /* Enhanced Parameters */
         .parameters-panel {
-            background: #334155;
-            border-radius: 8px;
-            padding: 16px;
-            margin-top: 16px;
+            background: var(--dark-3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
         }
 
         .param-group {
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
 
         .param-label {
             display: block;
-            margin-bottom: 6px;
-            font-size: 12px;
-            color: #94a3b8;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: var(--light-3);
             font-weight: 500;
         }
 
         .param-input {
             width: 100%;
-            padding: 8px 12px;
-            background: #475569;
-            border: 1px solid #64748b;
-            border-radius: 6px;
-            color: #e2e8f0;
+            padding: 10px 14px;
+            background: var(--dark-4);
+            border: 1px solid var(--dark-3);
+            border-radius: 8px;
+            color: var(--light-2);
             font-size: 14px;
         }
 
         .param-input:focus {
             outline: none;
-            border-color: #3b82f6;
+            border-color: var(--primary);
         }
 
         .param-row {
@@ -275,50 +492,51 @@
             gap: 12px;
         }
 
-        /* Enhanced Main Workspace */
+        /* Enhanced Workspace */
         .workspace {
-            background: #0f172a;
+            background: var(--dark-1);
             display: flex;
             flex-direction: column;
         }
 
         .workspace-tabs {
             display: flex;
-            background: #1e293b;
-            padding: 0 16px;
-            border-bottom: 1px solid #334155;
+            background: var(--dark-2);
+            padding: 0 20px;
+            border-bottom: 1px solid var(--dark-3);
         }
 
         .workspace-tab {
-            padding: 12px 20px;
+            padding: 14px 24px;
             background: transparent;
             border: none;
-            color: #94a3b8;
+            color: var(--light-3);
             cursor: pointer;
-            font-size: 13px;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
         }
 
         .workspace-tab.active {
-            color: #3b82f6;
-            border-bottom-color: #3b82f6;
-            background: #0f172a;
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: var(--dark-1);
         }
 
         .chart-container {
             flex: 1;
-            background: #1e293b;
-            margin: 16px;
-            border-radius: 8px;
-            border: 1px solid #334155;
+            background: var(--dark-2);
+            margin: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--dark-3);
             position: relative;
             overflow: hidden;
         }
 
         .chart-header {
-            padding: 12px 16px;
-            border-bottom: 1px solid #334155;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--dark-3);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -331,98 +549,103 @@
 
         .chart-placeholder {
             width: 100%;
-            height: calc(100% - 60px);
+            height: calc(100% - 70px);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #64748b;
-            font-size: 14px;
+            color: var(--light-3);
+            font-size: 16px;
+            text-align: center;
         }
 
         /* Enhanced Execution Panel */
         .execution-panel {
-            background: #1e293b;
-            margin: 0 16px 16px 16px;
-            border-radius: 8px;
-            border: 1px solid #334155;
+            background: var(--dark-2);
+            margin: 0 20px 20px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--dark-3);
         }
 
         .execution-header {
-            padding: 12px 16px;
-            border-bottom: 1px solid #334155;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--dark-3);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .execution-body {
-            padding: 16px;
+            padding: 20px;
             display: grid;
             grid-template-columns: repeat(4, 1fr) auto;
-            gap: 20px;
+            gap: 24px;
             align-items: center;
         }
 
         .execution-item {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
         }
 
         .execution-label {
-            font-size: 12px;
-            color: #94a3b8;
+            font-size: 13px;
+            color: var(--light-3);
         }
 
         .execution-value {
             font-weight: 600;
-            font-size: 16px;
+            font-size: 18px;
         }
 
         .execution-actions {
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
 
         .btn-buy {
-            background: #10b981;
+            background: var(--success);
             color: white;
-            padding: 10px 24px;
+            padding: 12px 28px;
             font-weight: 600;
+            font-size: 14px;
         }
 
         .btn-sell {
-            background: #ef4444;
+            background: var(--danger);
             color: white;
-            padding: 10px 24px;
+            padding: 12px 28px;
             font-weight: 600;
+            font-size: 14px;
         }
 
         /* Enhanced Market Data */
         .market-data {
-            background: #1e293b;
-            padding: 20px;
+            background: var(--dark-2);
+            padding: 24px;
             overflow-y: auto;
         }
 
         .market-tabs {
             display: flex;
             gap: 8px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
         .market-tab {
-            padding: 6px 12px;
-            background: #334155;
+            padding: 8px 16px;
+            background: var(--dark-3);
             border: none;
-            border-radius: 6px;
-            color: #94a3b8;
+            border-radius: 8px;
+            color: var(--light-3);
             cursor: pointer;
-            font-size: 12px;
+            font-size: 13px;
+            font-weight: 500;
         }
 
         .market-tab.active {
-            background: #3b82f6;
+            background: var(--primary);
             color: white;
         }
 
@@ -434,30 +657,30 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #334155;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--dark-3);
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.3s;
         }
 
         .instrument-item:hover {
-            background: #334155;
+            background: var(--dark-3);
         }
 
         .instrument-info {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 4px;
         }
 
         .instrument-name {
             font-weight: 600;
-            font-size: 14px;
+            font-size: 15px;
         }
 
         .instrument-details {
-            font-size: 12px;
-            color: #94a3b8;
+            font-size: 13px;
+            color: var(--light-3);
         }
 
         .instrument-price {
@@ -466,18 +689,18 @@
 
         .price {
             font-weight: 600;
-            font-size: 14px;
+            font-size: 15px;
         }
 
         .change {
-            font-size: 12px;
+            font-size: 13px;
         }
 
         /* Enhanced Bottom Panel */
         .bottom-panel {
             grid-column: 1 / -1;
-            background: #1e293b;
-            border-top: 1px solid #334155;
+            background: var(--dark-2);
+            border-top: 1px solid var(--dark-3);
             display: flex;
         }
 
@@ -489,467 +712,568 @@
 
         .terminal-tabs {
             display: flex;
-            background: #334155;
-            padding: 0 16px;
+            background: var(--dark-3);
+            padding: 0 20px;
         }
 
         .terminal-tab {
-            padding: 8px 16px;
+            padding: 10px 20px;
             background: transparent;
             border: none;
-            color: #94a3b8;
+            color: var(--light-3);
             cursor: pointer;
-            font-size: 12px;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s;
+            font-size: 13px;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
         }
 
         .terminal-tab.active {
-            color: #3b82f6;
-            border-bottom-color: #3b82f6;
-            background: #1e293b;
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: var(--dark-2);
         }
 
         .terminal-body {
             flex: 1;
-            padding: 16px;
+            padding: 20px;
             overflow-y: auto;
-            background: #0f172a;
+            background: var(--dark-1);
             font-family: 'Courier New', monospace;
             font-size: 13px;
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
         .log-entry {
-            margin-bottom: 6px;
-            padding: 4px 0;
+            margin-bottom: 8px;
+            padding: 6px 0;
             display: flex;
             align-items: flex-start;
-            gap: 8px;
+            gap: 12px;
         }
 
         .log-time {
-            color: #64748b;
-            min-width: 70px;
+            color: var(--light-3);
+            min-width: 80px;
+            font-size: 12px;
         }
 
         .log-content {
             flex: 1;
         }
 
-        .log-info { color: #3b82f6; }
-        .log-success { color: #10b981; }
-        .log-error { color: #ef4444; }
-        .log-warning { color: #f59e0b; }
+        .log-info { color: var(--primary); }
+        .log-success { color: var(--success); }
+        .log-error { color: var(--danger); }
+        .log-warning { color: var(--warning); }
         .log-trade { color: #8b5cf6; }
 
         /* Enhanced Performance Widgets */
         .performance-widgets {
-            width: 320px;
+            width: 350px;
             display: flex;
             flex-direction: column;
-            border-left: 1px solid #334155;
+            border-left: 1px solid var(--dark-3);
         }
 
         .performance-header {
-            padding: 16px;
-            border-bottom: 1px solid #334155;
+            padding: 20px;
+            border-bottom: 1px solid var(--dark-3);
         }
 
         .performance-body {
             flex: 1;
-            padding: 16px;
+            padding: 20px;
             overflow-y: auto;
         }
 
         .performance-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 16px;
         }
 
         .performance-card {
-            background: #334155;
-            border-radius: 8px;
-            padding: 12px;
+            background: var(--dark-3);
+            border-radius: 12px;
+            padding: 16px;
             text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .performance-card:hover {
+            transform: translateY(-2px);
         }
 
         .performance-value {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
-            margin: 4px 0;
+            margin: 8px 0;
         }
 
         .performance-label {
-            font-size: 11px;
-            color: #94a3b8;
+            font-size: 12px;
+            color: var(--light-3);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         /* Advanced Features */
         .backtest-results {
-            background: #334155;
-            border-radius: 8px;
-            padding: 16px;
-            margin-top: 16px;
+            background: var(--dark-3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
         }
 
         .result-metrics {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-top: 12px;
+            gap: 16px;
+            margin-top: 16px;
         }
 
         .metric-item {
             text-align: center;
-            padding: 8px;
-            background: #475569;
-            border-radius: 6px;
+            padding: 12px;
+            background: var(--dark-4);
+            border-radius: 8px;
         }
 
         .metric-value {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
-            margin: 4px 0;
+            margin: 6px 0;
         }
 
         .metric-label {
-            font-size: 11px;
-            color: #94a3b8;
+            font-size: 12px;
+            color: var(--light-3);
         }
 
         /* Risk Management Panel */
         .risk-panel {
-            background: #334155;
-            border-radius: 8px;
-            padding: 16px;
-            margin-top: 16px;
-            border-left: 4px solid #f59e0b;
+            background: var(--dark-3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid var(--warning);
         }
 
         .risk-metrics {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 12px;
+            gap: 16px;
+            margin-top: 16px;
         }
 
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
         }
+
+        /* Responsive Design */
+        @media (max-width: 1400px) {
+            .main-container {
+                grid-template-columns: 300px 1fr 350px;
+            }
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .visible {
+            display: flex !important;
+        }
     </style>
 </head>
 <body>
-    <!-- Enhanced Header -->
-    <div class="header">
-        <div class="logo">
-            <div class="logo-icon">Q</div>
-            <span>QuantPro Plus</span>
-        </div>
-        
-        <div class="nav-tabs">
-            <div class="nav-tab active">Dashboard</div>
-            <div class="nav-tab">Strategy Builder</div>
-            <div class="nav-tab">Backtesting</div>
-            <div class="nav-tab">Live Trading</div>
-            <div class="nav-tab">Analytics</div>
-            <div class="nav-tab">Risk Management</div>
-        </div>
-
-        <div class="user-menu">
-            <div class="connection-status">
-                <div class="status-dot"></div>
-                <span>Connected to Zerodha</span>
+    <!-- Authentication System -->
+    <div class="auth-container" id="authContainer">
+        <div class="auth-box">
+            <div class="auth-header">
+                <div class="auth-logo">Quantum Pro Max</div>
+                <div class="auth-subtitle">Advanced Algorithmic Trading Platform</div>
             </div>
-            <div class="user-info">Admin</div>
+
+            <div class="auth-tabs">
+                <div class="auth-tab active" data-tab="login">Login</div>
+                <div class="auth-tab" data-tab="signup">Sign Up</div>
+            </div>
+
+            <!-- Login Form -->
+            <div class="auth-form active" id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" id="loginEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Broker Connection</label>
+                    <select class="form-input" id="loginBroker">
+                        <option value="zerodha">Zerodha</option>
+                        <option value="angel">Angel Broking</option>
+                        <option value="upstox">Upstox</option>
+                        <option value="iifl">IIFL</option>
+                    </select>
+                </div>
+                <div class="form-footer">
+                    <button class="btn-auth" onclick="login()">Login to Quantum Pro</button>
+                    <div class="auth-switch">
+                        Don't have an account? <span class="auth-link" onclick="switchAuth('signup')">Sign up here</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Signup Form -->
+            <div class="auth-form" id="signupForm">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-input" id="signupName" placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" id="signupEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="signupPassword" placeholder="Create a password">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" class="form-input" id="signupConfirm" placeholder="Confirm your password">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Trading Experience</label>
+                    <select class="form-input" id="signupExperience">
+                        <option value="beginner">Beginner (0-1 years)</option>
+                        <option value="intermediate">Intermediate (1-3 years)</option>
+                        <option value="advanced">Advanced (3+ years)</option>
+                        <option value="professional">Professional</option>
+                    </select>
+                </div>
+                <div class="form-footer">
+                    <button class="btn-auth" onclick="signup()">Create Quantum Account</button>
+                    <div class="auth-switch">
+                        Already have an account? <span class="auth-link" onclick="switchAuth('login')">Login here</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Enhanced Main Container -->
-    <div class="container">
-        <!-- Enhanced Left Sidebar -->
-        <div class="sidebar">
-            <div class="section-title">Active Strategies</div>
-            
-            <div class="strategy-card running active">
-                <div class="strategy-header">
-                    <div>
-                        <div class="strategy-name">Mean Reversion NIFTY</div>
-                        <div class="strategy-type">Quantitative</div>
-                    </div>
-                    <div class="strategy-stats">
-                        <span class="profit">+₹12,450</span>
-                    </div>
-                </div>
-                <div class="strategy-actions">
-                    <button class="btn-icon">⚡ Run</button>
-                    <button class="btn-icon">⏸️ Pause</button>
-                    <button class="btn-icon">⏹️ Stop</button>
-                    <button class="btn-icon">📊 Stats</button>
-                </div>
+    <!-- Main Application -->
+    <div class="app-container" id="appContainer">
+        <!-- Enhanced Header -->
+        <div class="header">
+            <div class="app-logo">
+                <div class="logo-icon">Q</div>
+                <span>Quantum Pro Max</span>
             </div>
             
-            <div class="strategy-card running">
-                <div class="strategy-header">
-                    <div>
-                        <div class="strategy-name">Momentum BANKNIFTY</div>
-                        <div class="strategy-type">Momentum</div>
-                    </div>
-                    <div class="strategy-stats">
-                        <span class="profit">+₹8,230</span>
-                    </div>
-                </div>
-                <div class="strategy-actions">
-                    <button class="btn-icon">⚡ Run</button>
-                    <button class="btn-icon">⏸️ Pause</button>
-                    <button class="btn-icon">⏹️ Stop</button>
-                    <button class="btn-icon">📊 Stats</button>
-                </div>
+            <div class="nav-tabs">
+                <div class="nav-tab active">Dashboard</div>
+                <div class="nav-tab">Strategy Builder</div>
+                <div class="nav-tab">Backtesting</div>
+                <div class="nav-tab">Live Trading</div>
+                <div class="nav-tab">Analytics</div>
+                <div class="nav-tab">Risk Management</div>
             </div>
 
-            <div class="quick-actions">
-                <button class="btn btn-primary">+ New Strategy</button>
-                <button class="btn btn-success">Deploy All</button>
+            <div class="user-menu">
+                <div class="connection-status">
+                    <div class="status-dot"></div>
+                    <span id="brokerStatus">Connected to Zerodha</span>
+                </div>
+                <div class="user-profile" onclick="toggleUserMenu()">
+                    <div class="user-avatar" id="userAvatar">A</div>
+                    <div class="user-info">
+                        <div class="user-name" id="userName">Admin User</div>
+                        <div class="user-role">Professional Trader</div>
+                    </div>
+                </div>
             </div>
+        </div>
 
-            <!-- Strategy Parameters -->
-            <div class="parameters-panel">
-                <div class="section-title">Strategy Parameters</div>
+        <!-- Enhanced Main Container -->
+        <div class="main-container">
+            <!-- Enhanced Left Sidebar -->
+            <div class="sidebar">
+                <div class="section-title">
+                    Active Strategies
+                    <span class="section-action">+ New</span>
+                </div>
                 
-                <div class="param-group">
-                    <label class="param-label">Instrument & Quantity</label>
-                    <div class="param-row">
-                        <select class="param-input">
-                            <option>NIFTY 50</option>
-                            <option>BANKNIFTY</option>
-                            <option>FINNIFTY</option>
-                        </select>
-                        <input type="number" class="param-input" value="50" placeholder="Qty">
+                <div class="strategy-grid">
+                    <div class="strategy-card running active">
+                        <div class="strategy-header">
+                            <div>
+                                <div class="strategy-name">Quantum Mean Reversion</div>
+                                <div class="strategy-type">AI-Powered</div>
+                            </div>
+                            <div class="strategy-stats">
+                                <span class="profit">+₹12,450</span>
+                            </div>
+                        </div>
+                        <div class="strategy-stats">
+                            <span>NIFTY 50 • 1min</span>
+                            <span>Win Rate: 64%</span>
+                        </div>
+                        <div class="strategy-actions">
+                            <button class="btn-icon">⚡ Run</button>
+                            <button class="btn-icon">⏸️ Pause</button>
+                            <button class="btn-icon">⏹️ Stop</button>
+                            <button class="btn-icon">📊 Stats</button>
+                        </div>
+                    </div>
+                    
+                    <div class="strategy-card running">
+                        <div class="strategy-header">
+                            <div>
+                                <div class="strategy-name">Neural Momentum</div>
+                                <div class="strategy-type">Machine Learning</div>
+                            </div>
+                            <div class="strategy-stats">
+                                <span class="profit">+₹8,230</span>
+                            </div>
+                        </div>
+                        <div class="strategy-stats">
+                            <span>BANKNIFTY • 5min</span>
+                            <span>Win Rate: 58%</span>
+                        </div>
+                        <div class="strategy-actions">
+                            <button class="btn-icon">⚡ Run</button>
+                            <button class="btn-icon">⏸️ Pause</button>
+                            <button class="btn-icon">⏹️ Stop</button>
+                            <button class="btn-icon">📊 Stats</button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="param-group">
-                    <label class="param-label">Risk Management</label>
-                    <div class="param-row">
-                        <input type="number" class="param-input" value="5000" placeholder="Risk/Trade">
-                        <input type="number" class="param-input" value="25000" placeholder="Daily Limit">
-                    </div>
-                </div>
-
-                <div class="param-group">
-                    <label class="param-label">Trading Hours</label>
-                    <div class="param-row">
-                        <input type="time" class="param-input" value="09:15">
-                        <input type="time" class="param-input" value="15:30">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Backtest Results -->
-            <div class="backtest-results">
-                <div class="section-title">Backtest Results</div>
-                <div class="result-metrics">
-                    <div class="metric-item">
-                        <div class="metric-label">Win Rate</div>
-                        <div class="metric-value profit">64.2%</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-label">Sharpe Ratio</div>
-                        <div class="metric-value">1.8</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-label">Max DD</div>
-                        <div class="metric-value loss">-2.3%</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Enhanced Main Workspace -->
-        <div class="workspace">
-            <div class="workspace-tabs">
-                <div class="workspace-tab active">Live Chart</div>
-                <div class="workspace-tab">Order Book</div>
-                <div class="workspace-tab">Position Analysis</div>
-                <div class="workspace-tab">Strategy Performance</div>
-            </div>
-
-            <div class="chart-container">
-                <div class="chart-header">
-                    <div>NIFTY 50 - 1 Minute Chart</div>
-                    <div class="chart-controls">
-                        <button class="btn-icon">1m</button>
-                        <button class="btn-icon">5m</button>
-                        <button class="btn-icon">15m</button>
-                        <button class="btn-icon">1h</button>
-                        <button class="btn-icon">1d</button>
-                    </div>
-                </div>
-                <div class="chart-placeholder">
-                    📊 Advanced TradingView Chart Integration
-                    <br>
-                    <small style="color: #64748b; margin-top: 8px;">Real-time candlestick data with strategy signals</small>
-                </div>
-            </div>
-
-            <div class="execution-panel">
-                <div class="execution-header">
-                    <div>Quick Execution</div>
-                    <div class="execution-actions">
-                        <button class="btn-icon">🔄</button>
-                        <button class="btn-icon">⚙️</button>
-                    </div>
-                </div>
-                <div class="execution-body">
-                    <div class="execution-item">
-                        <div class="execution-label">Last Price</div>
-                        <div class="execution-value">21,856.45</div>
-                    </div>
-                    <div class="execution-item">
-                        <div class="execution-label">Today's PnL</div>
-                        <div class="execution-value profit">+₹12,450</div>
-                    </div>
-                    <div class="execution-item">
-                        <div class="execution-label">Open Positions</div>
-                        <div class="execution-value">8</div>
-                    </div>
-                    <div class="execution-item">
-                        <div class="execution-label">Win Rate</div>
-                        <div class="execution-value">64.2%</div>
-                    </div>
-                    <div class="execution-actions">
-                        <button class="btn-buy">BUY</button>
-                        <button class="btn-sell">SELL</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Enhanced Right Sidebar -->
-        <div class="sidebar market-data">
-            <div class="market-tabs">
-                <div class="market-tab active">Indices</div>
-                <div class="market-tab">Stocks</div>
-                <div class="market-tab">F&O</div>
-                <div class="market-tab">Watchlist</div>
-            </div>
-            
-            <ul class="instrument-list">
-                <li class="instrument-item">
-                    <div class="instrument-info">
-                        <div class="instrument-name">NIFTY 50</div>
-                        <div class="instrument-details">21,856.45 • +0.8%</div>
-                    </div>
-                    <div class="instrument-price">
-                        <div class="price">21,856.45</div>
-                        <div class="change profit">+168.75</div>
-                    </div>
-                </li>
-                <li class="instrument-item">
-                    <div class="instrument-info">
-                        <div class="instrument-name">BANKNIFTY</div>
-                        <div class="instrument-details">48,231.20 • +1.2%</div>
-                    </div>
-                    <div class="instrument-price">
-                        <div class="price">48,231.20</div>
-                        <div class="change profit">+572.45</div>
-                    </div>
-                </li>
-                <li class="instrument-item">
-                    <div class="instrument-info">
-                        <div class="instrument-name">RELIANCE</div>
-                        <div class="instrument-details">EQ • NSE</div>
-                    </div>
-                    <div class="instrument-price">
-                        <div class="price">2,845.50</div>
-                        <div class="change profit">+14.25</div>
-                    </div>
-                </li>
-            </ul>
-
-            <!-- Risk Management Panel -->
-            <div class="risk-panel">
-                <div class="section-title">Risk Management</div>
-                <div class="risk-metrics">
-                    <div class="execution-item">
-                        <div class="execution-label">Portfolio VaR</div>
-                        <div class="execution-value">₹45,230</div>
-                    </div>
-                    <div class="execution-item">
-                        <div class="execution-label">Margin Used</div>
-                        <div class="execution-value">68%</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick Order Panel -->
-            <div class="parameters-panel">
-                <div class="section-title">Quick Order</div>
-                <div class="param-row">
-                    <input type="text" class="param-input" placeholder="Symbol" value="RELIANCE">
-                    <input type="number" class="param-input" placeholder="Qty" value="100">
-                </div>
                 <div class="quick-actions">
-                    <button class="btn btn-success">BUY</button>
-                    <button class="btn btn-danger">SELL</button>
+                    <button class="btn btn-primary">Deploy All</button>
+                    <button class="btn btn-success">Optimize AI</button>
+                </div>
+
+                <!-- Strategy Parameters -->
+                <div class="parameters-panel">
+                    <div class="section-title">Strategy Parameters</div>
+                    
+                    <div class="param-group">
+                        <label class="param-label">Instrument & Quantity</label>
+                        <div class="param-row">
+                            <select class="param-input">
+                                <option>NIFTY 50</option>
+                                <option>BANKNIFTY</option>
+                                <option>FINNIFTY</option>
+                            </select>
+                            <input type="number" class="param-input" value="50" placeholder="Qty">
+                        </div>
+                    </div>
+
+                    <div class="param-group">
+                        <label class="param-label">Risk Management</label>
+                        <div class="param-row">
+                            <input type="number" class="param-input" value="5000" placeholder="Risk/Trade">
+                            <input type="number" class="param-input" value="25000" placeholder="Daily Limit">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Backtest Results -->
+                <div class="backtest-results">
+                    <div class="section-title">AI Backtest Results</div>
+                    <div class="result-metrics">
+                        <div class="metric-item">
+                            <div class="metric-label">Win Rate</div>
+                            <div class="metric-value profit">64.2%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Sharpe Ratio</div>
+                            <div class="metric-value">1.8</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Max DD</div>
+                            <div class="metric-value loss">-2.3%</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Enhanced Bottom Panel -->
-        <div class="bottom-panel">
-            <div class="terminal-container">
-                <div class="terminal-tabs">
-                    <div class="terminal-tab active">Trading Log</div>
-                    <div class="terminal-tab">System Log</div>
-                    <div class="terminal-tab">Error Log</div>
-                    <div class="terminal-tab">Strategy Log</div>
+            <!-- Enhanced Main Workspace -->
+            <div class="workspace">
+                <div class="workspace-tabs">
+                    <div class="workspace-tab active">Live Chart</div>
+                    <div class="workspace-tab">Order Book</div>
+                    <div class="workspace-tab">Position Analysis</div>
+                    <div class="workspace-tab">AI Signals</div>
                 </div>
-                <div class="terminal-body">
-                    <div class="log-entry">
-                        <span class="log-time">10:45:22</span>
-                        <span class="log-trade">[TRADE] BUY NIFTY 50@21856.45 | Qty: 50 | Strategy: Mean Reversion</span>
+
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div>NIFTY 50 - AI Enhanced Chart</div>
+                        <div class="chart-controls">
+                            <button class="btn-icon">1m</button>
+                            <button class="btn-icon">5m</button>
+                            <button class="btn-icon">15m</button>
+                            <button class="btn-icon">1h</button>
+                            <button class="btn-icon">1d</button>
+                        </div>
                     </div>
-                    <div class="log-entry">
-                        <span class="log-time">10:44:35</span>
-                        <span class="log-success">[SYSTEM] Market data feed connected successfully</span>
+                    <div class="chart-placeholder">
+                        <div style="font-size: 24px; margin-bottom: 16px;">📊</div>
+                        AI-Powered TradingView Integration
+                        <br>
+                        <small style="color: var(--light-3); margin-top: 8px;">Real-time candlestick data with neural network signals</small>
                     </div>
-                    <div class="log-entry">
-                        <span class="log-time">10:43:12</span>
-                        <span class="log-trade">[ORDER] BUY order filled for NIFTY</span>
+                </div>
+
+                <div class="execution-panel">
+                    <div class="execution-header">
+                        <div>Quantum Execution Panel</div>
+                        <div class="execution-actions">
+                            <button class="btn-icon">🔄 Auto</button>
+                            <button class="btn-icon">⚙️ Settings</button>
+                        </div>
                     </div>
-                    <div class="log-entry">
-                        <span class="log-time">10:42:55</span>
-                        <span class="log-warning">[RISK] High volatility detected in BANKNIFTY</span>
+                    <div class="execution-body">
+                        <div class="execution-item">
+                            <div class="execution-label">Last Price</div>
+                            <div class="execution-value">21,856.45</div>
+                        </div>
+                        <div class="execution-item">
+                            <div class="execution-label">Today's PnL</div>
+                            <div class="execution-value profit">+₹12,450</div>
+                        </div>
+                        <div class="execution-item">
+                            <div class="execution-label">Open Positions</div>
+                            <div class="execution-value">8</div>
+                        </div>
+                        <div class="execution-item">
+                            <div class="execution-label">AI Confidence</div>
+                            <div class="execution-value">87%</div>
+                        </div>
+                        <div class="execution-actions">
+                            <button class="btn-buy">QUANTUM BUY</button>
+                            <button class="btn-sell">QUANTUM SELL</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="performance-widgets">
-                <div class="performance-header">
-                    <div class="section-title">Live Performance</div>
+            <!-- Enhanced Right Sidebar -->
+            <div class="sidebar market-data">
+                <div class="market-tabs">
+                    <div class="market-tab active">Indices</div>
+                    <div class="market-tab">Stocks</div>
+                    <div class="market-tab">F&O</div>
+                    <div class="market-tab">AI Watchlist</div>
                 </div>
-                <div class="performance-body">
-                    <div class="performance-grid">
-                        <div class="performance-card">
-                            <div class="performance-label">Total PnL</div>
-                            <div class="performance-value profit">+₹24,560</div>
+                
+                <ul class="instrument-list">
+                    <li class="instrument-item">
+                        <div class="instrument-info">
+                            <div class="instrument-name">NIFTY 50</div>
+                            <div class="instrument-details">21,856.45 • +0.8% • AI: STRONG BUY</div>
                         </div>
-                        <div class="performance-card">
-                            <div class="performance-label">Today's PnL</div>
-                            <div class="performance-value profit">+₹12,450</div>
+                        <div class="instrument-price">
+                            <div class="price">21,856.45</div>
+                            <div class="change profit">+168.75</div>
                         </div>
-                        <div class="performance-card">
-                            <div class="performance-label">Win Rate</div>
-                            <div class="performance-value">64.2%</div>
+                    </li>
+                    <li class="instrument-item">
+                        <div class="instrument-info">
+                            <div class="instrument-name">BANKNIFTY</div>
+                            <div class="instrument-details">48,231.20 • +1.2% • AI: BUY</div>
                         </div>
-                        <div class="performance-card">
-                            <div class="performance-label">Sharpe Ratio</div>
-                            <div class="performance-value">1.8</div>
+                        <div class="instrument-price">
+                            <div class="price">48,231.20</div>
+                            <div class="change profit">+572.45</div>
+                        </div>
+                    </li>
+                </ul>
+
+                <!-- Risk Management Panel -->
+                <div class="risk-panel">
+                    <div class="section-title">Quantum Risk Management</div>
+                    <div class="risk-metrics">
+                        <div class="execution-item">
+                            <div class="execution-label">Portfolio VaR</div>
+                            <div class="execution-value">₹45,230</div>
+                        </div>
+                        <div class="execution-item">
+                            <div class="execution-label">AI Risk Score</div>
+                            <div class="execution-value">LOW</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Order Panel -->
+                <div class="parameters-panel">
+                    <div class="section-title">Quantum Quick Order</div>
+                    <div class="param-row">
+                        <input type="text" class="param-input" placeholder="Symbol" value="RELIANCE">
+                        <input type="number" class="param-input" placeholder="Qty" value="100">
+                    </div>
+                    <div class="quick-actions">
+                        <button class="btn btn-success">QUANTUM BUY</button>
+                        <button class="btn btn-danger">QUANTUM SELL</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Bottom Panel -->
+            <div class="bottom-panel">
+                <div class="terminal-container">
+                    <div class="terminal-tabs">
+                        <div class="terminal-tab active">Quantum Log</div>
+                        <div class="terminal-tab">AI Signals</div>
+                        <div class="terminal-tab">System Monitor</div>
+                        <div class="terminal-tab">Risk Alerts</div>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="log-entry">
+                            <span class="log-time">10:45:22</span>
+                            <span class="log-trade">[QUANTUM] AI executed BUY NIFTY 50@21856.45 | Neural Score: 94%</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">10:44:35</span>
+                            <span class="log-success">[SYSTEM] Quantum engine initialized successfully</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">10:43:12</span>
+                            <span class="log-info">[AI] Neural network detected bullish pattern (87% confidence)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="performance-widgets">
+                    <div class="performance-header">
+                        <div class="section-title">Quantum Performance</div>
+                    </div>
+                    <div class="performance-body">
+                        <div class="performance-grid">
+                            <div class="performance-card">
+                                <div class="performance-label">Total PnL</div>
+                                <div class="performance-value profit">+₹24,560</div>
+                            </div>
+                            <div class="performance-card">
+                                <div class="performance-label">AI Accuracy</div>
+                                <div class="performance-value">87.3%</div>
+                            </div>
+                            <div class="performance-card">
+                                <div class="performance-label">Win Rate</div>
+                                <div class="performance-value">64.2%</div>
+                            </div>
+                            <div class="performance-card">
+                                <div class="performance-label">Quantum Score</div>
+                                <div class="performance-value">A+</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -958,8 +1282,169 @@
     </div>
 
     <script>
-        // Enhanced QuantPro Plus Terminal
-        class QuantProPlusTerminal {
+        // Authentication System
+        class AuthSystem {
+            constructor() {
+                this.currentUser = null;
+                this.users = JSON.parse(localStorage.getItem('quantum_users')) || [];
+                this.initAuth();
+            }
+
+            initAuth() {
+                // Check if user is already logged in
+                const savedUser = localStorage.getItem('quantum_current_user');
+                if (savedUser) {
+                    this.currentUser = JSON.parse(savedUser);
+                    this.showApp();
+                }
+
+                // Auth tab switching
+                document.querySelectorAll('.auth-tab').forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        const tabName = tab.getAttribute('data-tab');
+                        this.switchAuthTab(tabName);
+                    });
+                });
+
+                // Enter key support for forms
+                document.querySelectorAll('.form-input').forEach(input => {
+                    input.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            const activeForm = document.querySelector('.auth-form.active');
+                            if (activeForm.id === 'loginForm') {
+                                login();
+                            } else {
+                                signup();
+                            }
+                        }
+                    });
+                });
+            }
+
+            switchAuthTab(tabName) {
+                document.querySelectorAll('.auth-tab').forEach(tab => tab.classList.remove('active'));
+                document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
+                
+                document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+                document.getElementById(`${tabName}Form`).classList.add('active');
+            }
+
+            login() {
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                const broker = document.getElementById('loginBroker').value;
+
+                if (!email || !password) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+
+                const user = this.users.find(u => u.email === email && u.password === password);
+                if (user) {
+                    this.currentUser = { ...user, broker };
+                    localStorage.setItem('quantum_current_user', JSON.stringify(this.currentUser));
+                    this.showApp();
+                } else {
+                    alert('Invalid email or password');
+                }
+            }
+
+            signup() {
+                const name = document.getElementById('signupName').value;
+                const email = document.getElementById('signupEmail').value;
+                const password = document.getElementById('signupPassword').value;
+                const confirm = document.getElementById('signupConfirm').value;
+                const experience = document.getElementById('signupExperience').value;
+
+                if (!name || !email || !password || !confirm) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+
+                if (password !== confirm) {
+                    alert('Passwords do not match');
+                    return;
+                }
+
+                if (this.users.find(u => u.email === email)) {
+                    alert('User already exists with this email');
+                    return;
+                }
+
+                const newUser = {
+                    id: Date.now(),
+                    name,
+                    email,
+                    password,
+                    experience,
+                    joinDate: new Date().toISOString(),
+                    avatar: name.charAt(0).toUpperCase()
+                };
+
+                this.users.push(newUser);
+                localStorage.setItem('quantum_users', JSON.stringify(this.users));
+                
+                this.currentUser = newUser;
+                localStorage.setItem('quantum_current_user', JSON.stringify(this.currentUser));
+                
+                this.showApp();
+            }
+
+            logout() {
+                this.currentUser = null;
+                localStorage.removeItem('quantum_current_user');
+                this.showAuth();
+            }
+
+            showApp() {
+                document.getElementById('authContainer').classList.add('hidden');
+                document.getElementById('appContainer').classList.add('visible');
+                
+                // Update UI with user data
+                if (this.currentUser) {
+                    document.getElementById('userName').textContent = this.currentUser.name;
+                    document.getElementById('userAvatar').textContent = this.currentUser.avatar;
+                    document.getElementById('brokerStatus').textContent = `Connected to ${this.currentUser.broker}`;
+                }
+
+                // Initialize trading terminal
+                new QuantumProMaxTerminal();
+            }
+
+            showAuth() {
+                document.getElementById('authContainer').classList.remove('hidden');
+                document.getElementById('appContainer').classList.remove('visible');
+                
+                // Clear form fields
+                document.querySelectorAll('.form-input').forEach(input => input.value = '');
+            }
+        }
+
+        // Global auth functions
+        const authSystem = new AuthSystem();
+
+        function switchAuth(tabName) {
+            authSystem.switchAuthTab(tabName);
+        }
+
+        function login() {
+            authSystem.login();
+        }
+
+        function signup() {
+            authSystem.signup();
+        }
+
+        function toggleUserMenu() {
+            // In a real app, this would show a dropdown menu
+            const logout = confirm('Do you want to logout?');
+            if (logout) {
+                authSystem.logout();
+            }
+        }
+
+        // Enhanced Trading Terminal
+        class QuantumProMaxTerminal {
             constructor() {
                 this.initEnhancedTerminal();
                 this.startEnhancedUpdates();
@@ -995,8 +1480,16 @@
                 document.querySelectorAll('.chart-controls .btn-icon').forEach(btn => {
                     btn.addEventListener('click', () => {
                         document.querySelectorAll('.chart-controls .btn-icon').forEach(b => b.style.background = '');
-                        btn.style.background = '#3b82f6';
+                        btn.style.background = 'var(--primary)';
                         this.switchTimeframe(btn.textContent);
+                    });
+                });
+
+                // Buy/Sell buttons
+                document.querySelectorAll('.btn-buy, .btn-sell').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const action = btn.textContent;
+                        this.executeQuantumTrade(action);
                     });
                 });
             }
@@ -1024,23 +1517,33 @@
             }
 
             startStrategy() {
-                this.addLogEntry('success', '[STRATEGY] Strategy started successfully');
+                this.addLogEntry('success', '[QUANTUM] AI strategy activated successfully');
             }
 
             pauseStrategy() {
-                this.addLogEntry('warning', '[STRATEGY] Strategy paused');
+                this.addLogEntry('warning', '[QUANTUM] Strategy paused - AI monitoring continues');
             }
 
             stopStrategy() {
-                this.addLogEntry('error', '[STRATEGY] Strategy stopped');
+                this.addLogEntry('error', '[QUANTUM] Strategy stopped - All positions closed');
             }
 
             showStrategyStats() {
-                this.addLogEntry('info', '[STATS] Showing strategy performance metrics');
+                this.addLogEntry('info', '[QUANTUM] Displaying advanced strategy analytics');
             }
 
             switchTimeframe(timeframe) {
-                this.addLogEntry('info', `[CHART] Switched to ${timeframe} timeframe`);
+                this.addLogEntry('info', `[CHART] Quantum chart updated to ${timeframe} timeframe`);
+            }
+
+            executeQuantumTrade(action) {
+                const strategies = ['Neural Network', 'Quantum AI', 'Deep Learning'];
+                const strategy = strategies[Math.floor(Math.random() * strategies.length)];
+                const confidence = Math.floor(Math.random() * 20 + 80);
+                
+                this.addLogEntry('trade', 
+                    `[QUANTUM] ${action} executed | ${strategy} | Confidence: ${confidence}%`
+                );
             }
 
             startEnhancedUpdates() {
@@ -1050,23 +1553,23 @@
                     this.updatePerformance();
                 }, 3000);
 
-                // Simulate trading activity
+                // Simulate AI trading activity
                 setInterval(() => {
-                    if (Math.random() > 0.7) {
-                        this.simulateTrade();
+                    if (Math.random() > 0.6) {
+                        this.simulateAITrade();
                     }
-                }, 8000);
+                }, 5000);
             }
 
             updateMarketData() {
                 const instruments = document.querySelectorAll('.instrument-item');
                 instruments.forEach(instrument => {
-                    if (Math.random() > 0.5) {
+                    if (Math.random() > 0.4) {
                         const priceElement = instrument.querySelector('.price');
                         const changeElement = instrument.querySelector('.change');
                         
                         const currentPrice = parseFloat(priceElement.textContent.replace(',', ''));
-                        const change = (Math.random() - 0.5) * 20;
+                        const change = (Math.random() - 0.5) * 25;
                         const newPrice = currentPrice + change;
                         
                         priceElement.textContent = newPrice.toFixed(2);
@@ -1089,7 +1592,7 @@
                 pnlElements.forEach(element => {
                     if (element.textContent.includes('₹')) {
                         const currentValue = parseFloat(element.textContent.replace('₹', '').replace(',', '').replace('+', '').replace('-', ''));
-                        const change = (Math.random() - 0.3) * 100;
+                        const change = (Math.random() - 0.3) * 200;
                         const newValue = Math.max(0, currentValue + change);
                         
                         if (newValue >= currentValue) {
@@ -1103,19 +1606,22 @@
                 });
             }
 
-            simulateTrade() {
-                const strategies = ['Mean Reversion', 'Momentum', 'Breakout', 'Scalping'];
+            simulateAITrade() {
+                const strategies = ['Quantum Mean Reversion', 'Neural Momentum', 'AI Breakout', 'Deep Scalping'];
                 const instruments = ['NIFTY', 'BANKNIFTY', 'RELIANCE', 'TCS'];
                 const actions = ['BUY', 'SELL'];
+                const aiModels = ['Neural Network', 'Quantum AI', 'Deep Learning', 'Reinforcement Learning'];
                 
                 const strategy = strategies[Math.floor(Math.random() * strategies.length)];
                 const instrument = instruments[Math.floor(Math.random() * instruments.length)];
                 const action = actions[Math.floor(Math.random() * actions.length)];
+                const aiModel = aiModels[Math.floor(Math.random() * aiModels.length)];
                 const price = (Math.random() * 1000 + 21000).toFixed(2);
                 const quantity = Math.floor(Math.random() * 100) + 10;
+                const confidence = Math.floor(Math.random() * 20 + 80);
                 
                 this.addLogEntry('trade', 
-                    `[TRADE] ${action} ${instrument}@${price} | Qty: ${quantity} | Strategy: ${strategy}`
+                    `[QUANTUM] ${action} ${instrument}@${price} | Qty: ${quantity} | ${aiModel} | Confidence: ${confidence}%`
                 );
             }
 
@@ -1135,22 +1641,6 @@
                 terminalBody.scrollTop = terminalBody.scrollHeight;
             }
         }
-
-        // Initialize the enhanced terminal
-        document.addEventListener('DOMContentLoaded', () => {
-            new QuantProPlusTerminal();
-        });
-
-        // Buy/Sell button functionality
-        document.querySelectorAll('.btn-buy, .btn-sell').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const action = btn.textContent;
-                const symbol = document.querySelector('.param-input[placeholder="Symbol"]').value;
-                const quantity = document.querySelector('.param-input[placeholder="Qty"]').value;
-                
-                alert(`${action} order for ${symbol} (Qty: ${quantity}) placed successfully!`);
-            });
-        });
     </script>
 </body>
 </html>
