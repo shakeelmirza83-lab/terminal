@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin-Client Terminal System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            display: flex;
+            gap: 20px;
+        }
+
+        /* Login Panel */
+        .login-panel {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            width: 300px;
+        }
+
+        .login-panel h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        .user-type {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .user-type-btn {
+            flex: 1;
+            padding: 10px;
+            background: #f0f0f0;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .user-type-btn.active {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+
+        /* Terminal Panel */
+        .terminal-panel {
+            flex: 1;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: none;
+        }
+
+        .terminal-header {
+            background: #333;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .admin-badge {
+            background: #ff4444;
+            color: white;
+        }
+
+        .client-badge {
+            background: #44ff44;
+            color: black;
+        }
+
+        .logout-btn {
+            background: #666;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .terminal-body {
+            height: 500px;
+            padding: 20px;
+            overflow-y: auto;
+            color: #00ff00;
+            background: #000;
+        }
+
+        .output-line {
+            margin-bottom: 8px;
+            word-wrap: break-word;
+        }
+
+        .input-line {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .prompt {
+            color: #00ff00;
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+
+        .command-input {
+            background: transparent;
+            border: none;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            outline: none;
+            flex: 1;
+        }
+
+        .welcome-message {
+            color: #00ff00;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .admin-command { color: #ff4444; }
+        .client-command { color: #44ff44; }
+        .output { color: #cccccc; }
+        .error { color: #ff4444; }
+        .success { color: #44ff44; }
+        .warning { color: #ffaa00; }
+
+        /* Scrollbar */
+        .terminal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .terminal-body::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        .terminal-body::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Panel -->
+        <div class="login-panel" id="loginPanel">
+            <h2>🔐 Terminal Login</h2>
+            
+            <div class="user-type">
+                <div class="user-type-btn active" data-type="admin">Admin</div>
+                <div class="user-type-btn" data-type="client">Client</div>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" placeholder="Enter username">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" placeholder="Enter password">
+            </div>
+
+            <button onclick="login()">Login</button>
+
+            <div style="margin-top: 20px; font-size: 12px; color: #666;">
+                <strong>Demo Credentials:</strong><br>
+                Admin: admin / admin123<br>
+                Client: client / client123
+            </div>
+        </div>
+
+        <!-- Terminal Panel -->
+        <div class="terminal-panel" id="terminalPanel">
+            <div class="terminal-header">
+                <div class="user-info">
+                    <span>Web Terminal</span>
+                    <span class="user-badge" id="userBadge">Admin</span>
+                    <span id="userDisplay">admin</span>
+                </div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+            <div class="terminal-body" id="terminalBody">
+                <!-- Terminal content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // User credentials and permissions
+        const users = {
+            'admin': { 
+                password: 'admin123', 
+                type: 'admin',
+                permissions: ['all']
+            },
+            'client': { 
+                password: 'client123', 
+                type: 'client',
+                permissions: ['view', 'basic_commands']
+            },
+            'user1': { 
+                password: 'pass123', 
+                type: 'client',
+                permissions: ['view', 'basic_commands']
+            }
+        };
+
+        let currentUser = null;
+        let commandHistory = [];
+        let historyIndex = -1;
+
+        // Initialize user type selection
+        document.querySelectorAll('.user-type-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.user-type-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const userType = document.querySelector('.user-type-btn.active').dataset.type;
+
+            if (!username || !password) {
+                alert('Please enter both username and password');
+                return;
+            }
+
+            // Check credentials
+            if (users[username] && users[username].password === password && users[username].type === userType) {
+                currentUser = {
+                    username: username,
+                    type: userType,
+                    permissions: users[username].permissions
+                };
+                
+                showTerminal();
+            } else {
+                alert('Invalid credentials or user type mismatch!');
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('loginPanel').style.display = 'block';
+            document.getElementById('terminalPanel').style.display = 'none';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        function showTerminal() {
+            document.getElementById('loginPanel').style.display = 'none';
+            document.getElementById('terminalPanel').style.display = 'block';
+            
+            // Update user info
+            document.getElementById('userBadge').textContent = currentUser.type.charAt(0).toUpperCase() + currentUser.type.slice(1);
+            document.getElementById('userBadge').className = `user-badge ${currentUser.type}-badge`;
+            document.getElementById('userDisplay').textContent = currentUser.username;
+
+            // Initialize terminal
+            initializeTerminal();
+        }
+
+        function initializeTerminal() {
+            const terminalBody = document.getElementById('terminalBody');
+            terminalBody.innerHTML = '';
+
+            // Welcome message based on user type
+            let welcomeMsg = '';
+            if (currentUser.type === 'admin') {
+                welcomeMsg = `
+                    <div class="welcome-message">
+                        <span class="success">🚀 Welcome Admin ${currentUser.username}!</span><br>
+                        <span class="output">You have full system access.</span><br>
+                        <span class="output">Type 'help' to see available commands.</span>
+                    </div>
+                `;
+            } else {
+                welcomeMsg = `
+                    <div class="welcome-message">
+                        <span class="success">👋 Welcome Client ${currentUser.username}!</span><br>
+                        <span class="output">You have limited access.</span><br>
+                        <span class="output">Type 'help' to see available commands.</span>
+                    </div>
+                `;
+            }
+
+            terminalBody.innerHTML = welcomeMsg;
+            addInputLine();
+        }
+
+        // Command definitions with permissions
+        const commands = {
+            // Admin only commands
+            'users': {
+                execute: (args) => {
+                    if (!hasPermission('all')) return "Permission denied";
+                    let userList = "Connected Users:\n";
+                    for (const user in users) {
+                        userList += `- ${user} (${users[user].type})\n`;
+                    }
+                    return userList;
+                },
+                permission: 'all',
+                description: 'List all users (Admin only)'
+            },
+
+            'system': {
+                execute: (args) => {
+                    if (!hasPermission('all')) return "Permission denied";
+                    return "System Status: ONLINE\nCPU: 15%\nMemory: 2.1GB/8GB\nDisk: 45% used";
+                },
+                permission: 'all',
+                description: 'System status (Admin only)'
+            },
+
+            'logs': {
+                execute: (args) => {
+                    if (!hasPermission('all')) return "Permission denied";
+                    return "System Logs:\n2024-01-15 10:30:22 - User login\n2024-01-15 10:25:11 - System backup\n2024-01-15 09:45:33 - Security check";
+                },
+                permission: 'all',
+                description: 'View system logs (Admin only)'
+            },
+
+            // Shared commands
+            'help': {
+                execute: (args) => {
+                    let helpText = "Available commands:\n";
+                    for (const [cmd, config] of Object.entries(commands)) {
+                        if (hasPermission(config.permission)) {
+                            helpText += `• ${cmd} - ${config.description}\n`;
+                        }
+                    }
+                    helpText += "\nCommon commands:\n• clear - Clear terminal\n• date - Show current date\n• time - Show current time\n• whoami - Show current user";
+                    return helpText;
+                },
+                permission: 'view',
+                description: 'Show help'
+            },
+
+            'clear': {
+                execute: (args) => {
+                    const terminalBody = document.getElementById('terminalBody');
+                    terminalBody.innerHTML = '';
+                    addInputLine();
+                    return null; // Don't add output line
+                },
+                permission: 'view',
+                description: 'Clear terminal'
+            },
+
+            'date': {
+                execute: (args) => new Date().toLocaleDateString(),
+                permission: 'basic_commands',
+                description: 'Show current date'
+            },
+
+            'time': {
+                execute: (args) => new Date().toLocaleTimeString(),
+                permission: 'basic_commands',
+                description: 'Show current time'
+            },
+
+            'whoami': {
+                execute: (args) => `${currentUser.username} (${currentUser.type})`,
+                permission: 'basic_commands',
+                description: 'Show current user'
+            },
+
+            'echo': {
+                execute: (args) => args.join(' '),
+                permission: 'basic_commands',
+                description: 'Echo text'
+            }
+        };
+
+        function hasPermission(requiredPermission) {
+            return currentUser.permissions.includes('all') || 
+                   currentUser.permissions.includes(requiredPermission);
+        }
+
+        function addOutputLine(content, type = 'output') {
+            const terminalBody = document.getElementById('terminalBody');
+            const line = document.createElement('div');
+            line.className = `output-line ${type}`;
+            line.innerHTML = content;
+            terminalBody.appendChild(line);
+            scrollToBottom();
+        }
+
+        function addInputLine() {
+            const terminalBody = document.getElementById('terminalBody');
+            const inputLine = document.createElement('div');
+            inputLine.className = 'input-line';
+            
+            const promptColor = currentUser.type === 'admin' ? '#ff4444' : '#44ff44';
+            inputLine.innerHTML = `
+                <span class="prompt" style="color: ${promptColor}">
+                    ${currentUser.username}@terminal:~$
+                </span>
+                <input type="text" class="command-input" autofocus>
+            `;
+            
+            terminalBody.appendChild(inputLine);
+            
+            const input = inputLine.querySelector('.command-input');
+            input.addEventListener('keydown', handleKeyPress);
+            input.focus();
+            
+            scrollToBottom();
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                executeCommand(event.target.value.trim());
+                event.target.value = '';
+            } else if (event.key === 'ArrowUp') {
+                event.preventDefault();
+                navigateHistory(-1);
+            } else if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                navigateHistory(1);
+            }
+        }
+
+        function executeCommand(commandText) {
+            if (!commandText) return;
+
+            // Add to history
+            commandHistory.push(commandText);
+            historyIndex = commandHistory.length;
+
+            // Display command
+            const promptColor = currentUser.type === 'admin' ? 'admin-command' : 'client-command';
+            addOutputLine(`
+                <span class="prompt" style="color: ${currentUser.type === 'admin' ? '#ff4444' : '#44ff44'}">
+                    ${currentUser.username}@terminal:~$
+                </span>
+                <span class="${promptColor}">${commandText}</span>
+            `);
+
+            // Process command
+            const [command, ...args] = commandText.split(' ');
+            
+            if (commands[command]) {
+                const result = commands[command].execute(args);
+                if (result !== null) {
+                    addOutputLine(result, 'output');
+                }
+            } else {
+                addOutputLine(`Command not found: ${command}. Type 'help' for available commands.`, 'error');
+            }
+
+            addInputLine();
+        }
+
+        function navigateHistory(direction) {
+            if (commandHistory.length === 0) return;
+
+            historyIndex = Math.max(0, Math.min(commandHistory.length, historyIndex + direction));
+            
+            const input = document.querySelector('.command-input');
+            if (input) {
+                input.value = historyIndex === commandHistory.length ? '' : commandHistory[historyIndex];
+            }
+        }
+
+        function scrollToBottom() {
+            const terminalBody = document.getElementById('terminalBody');
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
+
+        // Allow Enter key to submit login form
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+    </script>
+</body>
+</html>
