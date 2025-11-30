@@ -3,554 +3,1153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin-Client Terminal System</title>
+    <title>QuantPro Plus - Advanced Algo Trading</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: 'Courier New', monospace;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #0f172a;
+            color: #e2e8f0;
             height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Enhanced Header */
+        .header {
+            background: #1e293b;
+            border-bottom: 1px solid #334155;
+            height: 60px;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
         }
 
-        .container {
-            width: 90%;
-            max-width: 1200px;
+        .logo {
             display: flex;
-            gap: 20px;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 20px;
+            color: #3b82f6;
         }
 
-        /* Login Panel */
-        .login-panel {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            width: 300px;
-        }
-
-        .login-panel h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
             font-weight: bold;
         }
 
-        input, select {
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-tab {
+            padding: 8px 16px;
+            background: #334155;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .nav-tab.active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #10b981;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        /* Enhanced Main Layout */
+        .container {
+            display: grid;
+            grid-template-columns: 300px 1fr 350px;
+            grid-template-rows: 1fr 280px;
+            height: calc(100vh - 60px);
+            gap: 1px;
+            background: #334155;
+        }
+
+        /* Enhanced Left Sidebar */
+        .sidebar {
+            background: #1e293b;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Strategy Cards with Enhanced Design */
+        .strategy-card {
+            background: #334155;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-left: 4px solid;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .strategy-card.running { border-left-color: #10b981; }
+        .strategy-card.paused { border-left-color: #f59e0b; }
+        .strategy-card.stopped { border-left-color: #ef4444; }
+
+        .strategy-card.active {
+            background: #1e40af;
+            transform: translateX(4px);
+        }
+
+        .strategy-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .strategy-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .strategy-type {
+            font-size: 11px;
+            color: #94a3b8;
+            background: #475569;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .strategy-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .profit { color: #10b981; }
+        .loss { color: #ef4444; }
+
+        .strategy-actions {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .strategy-card:hover .strategy-actions {
+            opacity: 1;
+        }
+
+        .btn-icon {
+            padding: 4px 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            background: #475569;
+            color: #e2e8f0;
+        }
+
+        /* Enhanced Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 16px 0;
+        }
+
+        .btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        /* Enhanced Parameters Panel */
+        .parameters-panel {
+            background: #334155;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .param-group {
+            margin-bottom: 12px;
+        }
+
+        .param-label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .param-input {
             width: 100%;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
+            padding: 8px 12px;
+            background: #475569;
+            border: 1px solid #64748b;
+            border-radius: 6px;
+            color: #e2e8f0;
             font-size: 14px;
         }
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
+        .param-input:focus {
+            outline: none;
+            border-color: #3b82f6;
         }
 
-        button:hover {
-            background: #45a049;
+        .param-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
         }
 
-        .user-type {
+        /* Enhanced Main Workspace */
+        .workspace {
+            background: #0f172a;
             display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
+            flex-direction: column;
         }
 
-        .user-type-btn {
-            flex: 1;
-            padding: 10px;
-            background: #f0f0f0;
-            border: 2px solid #ddd;
-            border-radius: 5px;
+        .workspace-tabs {
+            display: flex;
+            background: #1e293b;
+            padding: 0 16px;
+            border-bottom: 1px solid #334155;
+        }
+
+        .workspace-tab {
+            padding: 12px 20px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
             cursor: pointer;
-            text-align: center;
+            font-size: 13px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
         }
 
-        .user-type-btn.active {
-            background: #4CAF50;
-            color: white;
-            border-color: #4CAF50;
+        .workspace-tab.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+            background: #0f172a;
         }
 
-        /* Terminal Panel */
-        .terminal-panel {
+        .chart-container {
             flex: 1;
-            background: #000;
-            border-radius: 10px;
+            background: #1e293b;
+            margin: 16px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            display: none;
         }
 
-        .terminal-header {
-            background: #333;
-            padding: 15px;
+        .chart-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid #334155;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: white;
         }
 
-        .user-info {
+        .chart-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chart-placeholder {
+            width: 100%;
+            height: calc(100% - 60px);
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            color: #64748b;
+            font-size: 14px;
         }
 
-        .user-badge {
-            padding: 5px 10px;
-            border-radius: 15px;
+        /* Enhanced Execution Panel */
+        .execution-panel {
+            background: #1e293b;
+            margin: 0 16px 16px 16px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+        }
+
+        .execution-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .execution-body {
+            padding: 16px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr) auto;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .execution-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .execution-label {
             font-size: 12px;
-            font-weight: bold;
+            color: #94a3b8;
         }
 
-        .admin-badge {
-            background: #ff4444;
+        .execution-value {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .execution-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-buy {
+            background: #10b981;
             color: white;
+            padding: 10px 24px;
+            font-weight: 600;
         }
 
-        .client-badge {
-            background: #44ff44;
-            color: black;
-        }
-
-        .logout-btn {
-            background: #666;
+        .btn-sell {
+            background: #ef4444;
             color: white;
+            padding: 10px 24px;
+            font-weight: 600;
+        }
+
+        /* Enhanced Market Data */
+        .market-data {
+            background: #1e293b;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .market-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .market-tab {
+            padding: 6px 12px;
+            background: #334155;
             border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
+            border-radius: 6px;
+            color: #94a3b8;
             cursor: pointer;
+            font-size: 12px;
+        }
+
+        .market-tab.active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .instrument-list {
+            list-style: none;
+        }
+
+        .instrument-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #334155;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .instrument-item:hover {
+            background: #334155;
+        }
+
+        .instrument-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .instrument-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .instrument-details {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .instrument-price {
+            text-align: right;
+        }
+
+        .price {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .change {
+            font-size: 12px;
+        }
+
+        /* Enhanced Bottom Panel */
+        .bottom-panel {
+            grid-column: 1 / -1;
+            background: #1e293b;
+            border-top: 1px solid #334155;
+            display: flex;
+        }
+
+        .terminal-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .terminal-tabs {
+            display: flex;
+            background: #334155;
+            padding: 0 16px;
+        }
+
+        .terminal-tab {
+            padding: 8px 16px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 12px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .terminal-tab.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+            background: #1e293b;
         }
 
         .terminal-body {
-            height: 500px;
-            padding: 20px;
+            flex: 1;
+            padding: 16px;
             overflow-y: auto;
-            color: #00ff00;
-            background: #000;
-        }
-
-        .output-line {
-            margin-bottom: 8px;
-            word-wrap: break-word;
-        }
-
-        .input-line {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .prompt {
-            color: #00ff00;
-            margin-right: 10px;
-            white-space: nowrap;
-        }
-
-        .command-input {
-            background: transparent;
-            border: none;
-            color: #00ff00;
+            background: #0f172a;
             font-family: 'Courier New', monospace;
-            font-size: 14px;
-            outline: none;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .log-entry {
+            margin-bottom: 6px;
+            padding: 4px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .log-time {
+            color: #64748b;
+            min-width: 70px;
+        }
+
+        .log-content {
             flex: 1;
         }
 
-        .welcome-message {
-            color: #00ff00;
-            margin-bottom: 15px;
-            line-height: 1.5;
+        .log-info { color: #3b82f6; }
+        .log-success { color: #10b981; }
+        .log-error { color: #ef4444; }
+        .log-warning { color: #f59e0b; }
+        .log-trade { color: #8b5cf6; }
+
+        /* Enhanced Performance Widgets */
+        .performance-widgets {
+            width: 320px;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid #334155;
         }
 
-        .admin-command { color: #ff4444; }
-        .client-command { color: #44ff44; }
-        .output { color: #cccccc; }
-        .error { color: #ff4444; }
-        .success { color: #44ff44; }
-        .warning { color: #ffaa00; }
-
-        /* Scrollbar */
-        .terminal-body::-webkit-scrollbar {
-            width: 8px;
+        .performance-header {
+            padding: 16px;
+            border-bottom: 1px solid #334155;
         }
 
-        .terminal-body::-webkit-scrollbar-track {
-            background: #1a1a1a;
+        .performance-body {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
         }
 
-        .terminal-body::-webkit-scrollbar-thumb {
-            background: #444;
-            border-radius: 4px;
+        .performance-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .performance-card {
+            background: #334155;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .performance-value {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 4px 0;
+        }
+
+        .performance-label {
+            font-size: 11px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Advanced Features */
+        .backtest-results {
+            background: #334155;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .result-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .metric-item {
+            text-align: center;
+            padding: 8px;
+            background: #475569;
+            border-radius: 6px;
+        }
+
+        .metric-value {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 4px 0;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        /* Risk Management Panel */
+        .risk-panel {
+            background: #334155;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .risk-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
     </style>
 </head>
 <body>
+    <!-- Enhanced Header -->
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">Q</div>
+            <span>QuantPro Plus</span>
+        </div>
+        
+        <div class="nav-tabs">
+            <div class="nav-tab active">Dashboard</div>
+            <div class="nav-tab">Strategy Builder</div>
+            <div class="nav-tab">Backtesting</div>
+            <div class="nav-tab">Live Trading</div>
+            <div class="nav-tab">Analytics</div>
+            <div class="nav-tab">Risk Management</div>
+        </div>
+
+        <div class="user-menu">
+            <div class="connection-status">
+                <div class="status-dot"></div>
+                <span>Connected to Zerodha</span>
+            </div>
+            <div class="user-info">Admin</div>
+        </div>
+    </div>
+
+    <!-- Enhanced Main Container -->
     <div class="container">
-        <!-- Login Panel -->
-        <div class="login-panel" id="loginPanel">
-            <h2>🔐 Terminal Login</h2>
+        <!-- Enhanced Left Sidebar -->
+        <div class="sidebar">
+            <div class="section-title">Active Strategies</div>
             
-            <div class="user-type">
-                <div class="user-type-btn active" data-type="admin">Admin</div>
-                <div class="user-type-btn" data-type="client">Client</div>
+            <div class="strategy-card running active">
+                <div class="strategy-header">
+                    <div>
+                        <div class="strategy-name">Mean Reversion NIFTY</div>
+                        <div class="strategy-type">Quantitative</div>
+                    </div>
+                    <div class="strategy-stats">
+                        <span class="profit">+₹12,450</span>
+                    </div>
+                </div>
+                <div class="strategy-actions">
+                    <button class="btn-icon">⚡ Run</button>
+                    <button class="btn-icon">⏸️ Pause</button>
+                    <button class="btn-icon">⏹️ Stop</button>
+                    <button class="btn-icon">📊 Stats</button>
+                </div>
+            </div>
+            
+            <div class="strategy-card running">
+                <div class="strategy-header">
+                    <div>
+                        <div class="strategy-name">Momentum BANKNIFTY</div>
+                        <div class="strategy-type">Momentum</div>
+                    </div>
+                    <div class="strategy-stats">
+                        <span class="profit">+₹8,230</span>
+                    </div>
+                </div>
+                <div class="strategy-actions">
+                    <button class="btn-icon">⚡ Run</button>
+                    <button class="btn-icon">⏸️ Pause</button>
+                    <button class="btn-icon">⏹️ Stop</button>
+                    <button class="btn-icon">📊 Stats</button>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" placeholder="Enter username">
+            <div class="quick-actions">
+                <button class="btn btn-primary">+ New Strategy</button>
+                <button class="btn btn-success">Deploy All</button>
             </div>
 
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" placeholder="Enter password">
+            <!-- Strategy Parameters -->
+            <div class="parameters-panel">
+                <div class="section-title">Strategy Parameters</div>
+                
+                <div class="param-group">
+                    <label class="param-label">Instrument & Quantity</label>
+                    <div class="param-row">
+                        <select class="param-input">
+                            <option>NIFTY 50</option>
+                            <option>BANKNIFTY</option>
+                            <option>FINNIFTY</option>
+                        </select>
+                        <input type="number" class="param-input" value="50" placeholder="Qty">
+                    </div>
+                </div>
+
+                <div class="param-group">
+                    <label class="param-label">Risk Management</label>
+                    <div class="param-row">
+                        <input type="number" class="param-input" value="5000" placeholder="Risk/Trade">
+                        <input type="number" class="param-input" value="25000" placeholder="Daily Limit">
+                    </div>
+                </div>
+
+                <div class="param-group">
+                    <label class="param-label">Trading Hours</label>
+                    <div class="param-row">
+                        <input type="time" class="param-input" value="09:15">
+                        <input type="time" class="param-input" value="15:30">
+                    </div>
+                </div>
             </div>
 
-            <button onclick="login()">Login</button>
-
-            <div style="margin-top: 20px; font-size: 12px; color: #666;">
-                <strong>Demo Credentials:</strong><br>
-                Admin: admin / admin123<br>
-                Client: client / client123
+            <!-- Backtest Results -->
+            <div class="backtest-results">
+                <div class="section-title">Backtest Results</div>
+                <div class="result-metrics">
+                    <div class="metric-item">
+                        <div class="metric-label">Win Rate</div>
+                        <div class="metric-value profit">64.2%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Sharpe Ratio</div>
+                        <div class="metric-value">1.8</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Max DD</div>
+                        <div class="metric-value loss">-2.3%</div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Terminal Panel -->
-        <div class="terminal-panel" id="terminalPanel">
-            <div class="terminal-header">
-                <div class="user-info">
-                    <span>Web Terminal</span>
-                    <span class="user-badge" id="userBadge">Admin</span>
-                    <span id="userDisplay">admin</span>
-                </div>
-                <button class="logout-btn" onclick="logout()">Logout</button>
+        <!-- Enhanced Main Workspace -->
+        <div class="workspace">
+            <div class="workspace-tabs">
+                <div class="workspace-tab active">Live Chart</div>
+                <div class="workspace-tab">Order Book</div>
+                <div class="workspace-tab">Position Analysis</div>
+                <div class="workspace-tab">Strategy Performance</div>
             </div>
-            <div class="terminal-body" id="terminalBody">
-                <!-- Terminal content will be loaded here -->
+
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div>NIFTY 50 - 1 Minute Chart</div>
+                    <div class="chart-controls">
+                        <button class="btn-icon">1m</button>
+                        <button class="btn-icon">5m</button>
+                        <button class="btn-icon">15m</button>
+                        <button class="btn-icon">1h</button>
+                        <button class="btn-icon">1d</button>
+                    </div>
+                </div>
+                <div class="chart-placeholder">
+                    📊 Advanced TradingView Chart Integration
+                    <br>
+                    <small style="color: #64748b; margin-top: 8px;">Real-time candlestick data with strategy signals</small>
+                </div>
+            </div>
+
+            <div class="execution-panel">
+                <div class="execution-header">
+                    <div>Quick Execution</div>
+                    <div class="execution-actions">
+                        <button class="btn-icon">🔄</button>
+                        <button class="btn-icon">⚙️</button>
+                    </div>
+                </div>
+                <div class="execution-body">
+                    <div class="execution-item">
+                        <div class="execution-label">Last Price</div>
+                        <div class="execution-value">21,856.45</div>
+                    </div>
+                    <div class="execution-item">
+                        <div class="execution-label">Today's PnL</div>
+                        <div class="execution-value profit">+₹12,450</div>
+                    </div>
+                    <div class="execution-item">
+                        <div class="execution-label">Open Positions</div>
+                        <div class="execution-value">8</div>
+                    </div>
+                    <div class="execution-item">
+                        <div class="execution-label">Win Rate</div>
+                        <div class="execution-value">64.2%</div>
+                    </div>
+                    <div class="execution-actions">
+                        <button class="btn-buy">BUY</button>
+                        <button class="btn-sell">SELL</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Right Sidebar -->
+        <div class="sidebar market-data">
+            <div class="market-tabs">
+                <div class="market-tab active">Indices</div>
+                <div class="market-tab">Stocks</div>
+                <div class="market-tab">F&O</div>
+                <div class="market-tab">Watchlist</div>
+            </div>
+            
+            <ul class="instrument-list">
+                <li class="instrument-item">
+                    <div class="instrument-info">
+                        <div class="instrument-name">NIFTY 50</div>
+                        <div class="instrument-details">21,856.45 • +0.8%</div>
+                    </div>
+                    <div class="instrument-price">
+                        <div class="price">21,856.45</div>
+                        <div class="change profit">+168.75</div>
+                    </div>
+                </li>
+                <li class="instrument-item">
+                    <div class="instrument-info">
+                        <div class="instrument-name">BANKNIFTY</div>
+                        <div class="instrument-details">48,231.20 • +1.2%</div>
+                    </div>
+                    <div class="instrument-price">
+                        <div class="price">48,231.20</div>
+                        <div class="change profit">+572.45</div>
+                    </div>
+                </li>
+                <li class="instrument-item">
+                    <div class="instrument-info">
+                        <div class="instrument-name">RELIANCE</div>
+                        <div class="instrument-details">EQ • NSE</div>
+                    </div>
+                    <div class="instrument-price">
+                        <div class="price">2,845.50</div>
+                        <div class="change profit">+14.25</div>
+                    </div>
+                </li>
+            </ul>
+
+            <!-- Risk Management Panel -->
+            <div class="risk-panel">
+                <div class="section-title">Risk Management</div>
+                <div class="risk-metrics">
+                    <div class="execution-item">
+                        <div class="execution-label">Portfolio VaR</div>
+                        <div class="execution-value">₹45,230</div>
+                    </div>
+                    <div class="execution-item">
+                        <div class="execution-label">Margin Used</div>
+                        <div class="execution-value">68%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Order Panel -->
+            <div class="parameters-panel">
+                <div class="section-title">Quick Order</div>
+                <div class="param-row">
+                    <input type="text" class="param-input" placeholder="Symbol" value="RELIANCE">
+                    <input type="number" class="param-input" placeholder="Qty" value="100">
+                </div>
+                <div class="quick-actions">
+                    <button class="btn btn-success">BUY</button>
+                    <button class="btn btn-danger">SELL</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Bottom Panel -->
+        <div class="bottom-panel">
+            <div class="terminal-container">
+                <div class="terminal-tabs">
+                    <div class="terminal-tab active">Trading Log</div>
+                    <div class="terminal-tab">System Log</div>
+                    <div class="terminal-tab">Error Log</div>
+                    <div class="terminal-tab">Strategy Log</div>
+                </div>
+                <div class="terminal-body">
+                    <div class="log-entry">
+                        <span class="log-time">10:45:22</span>
+                        <span class="log-trade">[TRADE] BUY NIFTY 50@21856.45 | Qty: 50 | Strategy: Mean Reversion</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-time">10:44:35</span>
+                        <span class="log-success">[SYSTEM] Market data feed connected successfully</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-time">10:43:12</span>
+                        <span class="log-trade">[ORDER] BUY order filled for NIFTY</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-time">10:42:55</span>
+                        <span class="log-warning">[RISK] High volatility detected in BANKNIFTY</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="performance-widgets">
+                <div class="performance-header">
+                    <div class="section-title">Live Performance</div>
+                </div>
+                <div class="performance-body">
+                    <div class="performance-grid">
+                        <div class="performance-card">
+                            <div class="performance-label">Total PnL</div>
+                            <div class="performance-value profit">+₹24,560</div>
+                        </div>
+                        <div class="performance-card">
+                            <div class="performance-label">Today's PnL</div>
+                            <div class="performance-value profit">+₹12,450</div>
+                        </div>
+                        <div class="performance-card">
+                            <div class="performance-label">Win Rate</div>
+                            <div class="performance-value">64.2%</div>
+                        </div>
+                        <div class="performance-card">
+                            <div class="performance-label">Sharpe Ratio</div>
+                            <div class="performance-value">1.8</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // User credentials and permissions
-        const users = {
-            'admin': { 
-                password: 'admin123', 
-                type: 'admin',
-                permissions: ['all']
-            },
-            'client': { 
-                password: 'client123', 
-                type: 'client',
-                permissions: ['view', 'basic_commands']
-            },
-            'user1': { 
-                password: 'pass123', 
-                type: 'client',
-                permissions: ['view', 'basic_commands']
-            }
-        };
-
-        let currentUser = null;
-        let commandHistory = [];
-        let historyIndex = -1;
-
-        // Initialize user type selection
-        document.querySelectorAll('.user-type-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.user-type-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
-        function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const userType = document.querySelector('.user-type-btn.active').dataset.type;
-
-            if (!username || !password) {
-                alert('Please enter both username and password');
-                return;
+        // Enhanced QuantPro Plus Terminal
+        class QuantProPlusTerminal {
+            constructor() {
+                this.initEnhancedTerminal();
+                this.startEnhancedUpdates();
             }
 
-            // Check credentials
-            if (users[username] && users[username].password === password && users[username].type === userType) {
-                currentUser = {
-                    username: username,
-                    type: userType,
-                    permissions: users[username].permissions
+            initEnhancedTerminal() {
+                // Enhanced tab switching
+                this.initTabSwitching('.nav-tab', 'active');
+                this.initTabSwitching('.workspace-tab', 'active');
+                this.initTabSwitching('.market-tab', 'active');
+                this.initTabSwitching('.terminal-tab', 'active');
+
+                // Strategy card interactions
+                document.querySelectorAll('.strategy-card').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        if (!e.target.classList.contains('btn-icon')) {
+                            document.querySelectorAll('.strategy-card').forEach(c => c.classList.remove('active'));
+                            card.classList.add('active');
+                        }
+                    });
+                });
+
+                // Strategy action buttons
+                document.querySelectorAll('.strategy-actions .btn-icon').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const action = btn.textContent;
+                        this.handleStrategyAction(action);
+                    });
+                });
+
+                // Chart timeframe controls
+                document.querySelectorAll('.chart-controls .btn-icon').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.chart-controls .btn-icon').forEach(b => b.style.background = '');
+                        btn.style.background = '#3b82f6';
+                        this.switchTimeframe(btn.textContent);
+                    });
+                });
+            }
+
+            initTabSwitching(selector, activeClass) {
+                document.querySelectorAll(selector).forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        document.querySelectorAll(selector).forEach(t => t.classList.remove(activeClass));
+                        tab.classList.add(activeClass);
+                    });
+                });
+            }
+
+            handleStrategyAction(action) {
+                const actions = {
+                    '⚡ Run': () => this.startStrategy(),
+                    '⏸️ Pause': () => this.pauseStrategy(),
+                    '⏹️ Stop': () => this.stopStrategy(),
+                    '📊 Stats': () => this.showStrategyStats()
                 };
-                
-                showTerminal();
-            } else {
-                alert('Invalid credentials or user type mismatch!');
-            }
-        }
 
-        function logout() {
-            currentUser = null;
-            document.getElementById('loginPanel').style.display = 'block';
-            document.getElementById('terminalPanel').style.display = 'none';
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
-        }
-
-        function showTerminal() {
-            document.getElementById('loginPanel').style.display = 'none';
-            document.getElementById('terminalPanel').style.display = 'block';
-            
-            // Update user info
-            document.getElementById('userBadge').textContent = currentUser.type.charAt(0).toUpperCase() + currentUser.type.slice(1);
-            document.getElementById('userBadge').className = `user-badge ${currentUser.type}-badge`;
-            document.getElementById('userDisplay').textContent = currentUser.username;
-
-            // Initialize terminal
-            initializeTerminal();
-        }
-
-        function initializeTerminal() {
-            const terminalBody = document.getElementById('terminalBody');
-            terminalBody.innerHTML = '';
-
-            // Welcome message based on user type
-            let welcomeMsg = '';
-            if (currentUser.type === 'admin') {
-                welcomeMsg = `
-                    <div class="welcome-message">
-                        <span class="success">🚀 Welcome Admin ${currentUser.username}!</span><br>
-                        <span class="output">You have full system access.</span><br>
-                        <span class="output">Type 'help' to see available commands.</span>
-                    </div>
-                `;
-            } else {
-                welcomeMsg = `
-                    <div class="welcome-message">
-                        <span class="success">👋 Welcome Client ${currentUser.username}!</span><br>
-                        <span class="output">You have limited access.</span><br>
-                        <span class="output">Type 'help' to see available commands.</span>
-                    </div>
-                `;
+                if (actions[action]) {
+                    actions[action]();
+                }
             }
 
-            terminalBody.innerHTML = welcomeMsg;
-            addInputLine();
-        }
+            startStrategy() {
+                this.addLogEntry('success', '[STRATEGY] Strategy started successfully');
+            }
 
-        // Command definitions with permissions
-        const commands = {
-            // Admin only commands
-            'users': {
-                execute: (args) => {
-                    if (!hasPermission('all')) return "Permission denied";
-                    let userList = "Connected Users:\n";
-                    for (const user in users) {
-                        userList += `- ${user} (${users[user].type})\n`;
+            pauseStrategy() {
+                this.addLogEntry('warning', '[STRATEGY] Strategy paused');
+            }
+
+            stopStrategy() {
+                this.addLogEntry('error', '[STRATEGY] Strategy stopped');
+            }
+
+            showStrategyStats() {
+                this.addLogEntry('info', '[STATS] Showing strategy performance metrics');
+            }
+
+            switchTimeframe(timeframe) {
+                this.addLogEntry('info', `[CHART] Switched to ${timeframe} timeframe`);
+            }
+
+            startEnhancedUpdates() {
+                // Live market data updates
+                setInterval(() => {
+                    this.updateMarketData();
+                    this.updatePerformance();
+                }, 3000);
+
+                // Simulate trading activity
+                setInterval(() => {
+                    if (Math.random() > 0.7) {
+                        this.simulateTrade();
                     }
-                    return userList;
-                },
-                permission: 'all',
-                description: 'List all users (Admin only)'
-            },
+                }, 8000);
+            }
 
-            'system': {
-                execute: (args) => {
-                    if (!hasPermission('all')) return "Permission denied";
-                    return "System Status: ONLINE\nCPU: 15%\nMemory: 2.1GB/8GB\nDisk: 45% used";
-                },
-                permission: 'all',
-                description: 'System status (Admin only)'
-            },
-
-            'logs': {
-                execute: (args) => {
-                    if (!hasPermission('all')) return "Permission denied";
-                    return "System Logs:\n2024-01-15 10:30:22 - User login\n2024-01-15 10:25:11 - System backup\n2024-01-15 09:45:33 - Security check";
-                },
-                permission: 'all',
-                description: 'View system logs (Admin only)'
-            },
-
-            // Shared commands
-            'help': {
-                execute: (args) => {
-                    let helpText = "Available commands:\n";
-                    for (const [cmd, config] of Object.entries(commands)) {
-                        if (hasPermission(config.permission)) {
-                            helpText += `• ${cmd} - ${config.description}\n`;
+            updateMarketData() {
+                const instruments = document.querySelectorAll('.instrument-item');
+                instruments.forEach(instrument => {
+                    if (Math.random() > 0.5) {
+                        const priceElement = instrument.querySelector('.price');
+                        const changeElement = instrument.querySelector('.change');
+                        
+                        const currentPrice = parseFloat(priceElement.textContent.replace(',', ''));
+                        const change = (Math.random() - 0.5) * 20;
+                        const newPrice = currentPrice + change;
+                        
+                        priceElement.textContent = newPrice.toFixed(2);
+                        
+                        const changeValue = newPrice - currentPrice;
+                        if (changeValue >= 0) {
+                            changeElement.textContent = `+${changeValue.toFixed(2)}`;
+                            changeElement.className = 'change profit';
+                        } else {
+                            changeElement.textContent = changeValue.toFixed(2);
+                            changeElement.className = 'change loss';
                         }
                     }
-                    helpText += "\nCommon commands:\n• clear - Clear terminal\n• date - Show current date\n• time - Show current time\n• whoami - Show current user";
-                    return helpText;
-                },
-                permission: 'view',
-                description: 'Show help'
-            },
-
-            'clear': {
-                execute: (args) => {
-                    const terminalBody = document.getElementById('terminalBody');
-                    terminalBody.innerHTML = '';
-                    addInputLine();
-                    return null; // Don't add output line
-                },
-                permission: 'view',
-                description: 'Clear terminal'
-            },
-
-            'date': {
-                execute: (args) => new Date().toLocaleDateString(),
-                permission: 'basic_commands',
-                description: 'Show current date'
-            },
-
-            'time': {
-                execute: (args) => new Date().toLocaleTimeString(),
-                permission: 'basic_commands',
-                description: 'Show current time'
-            },
-
-            'whoami': {
-                execute: (args) => `${currentUser.username} (${currentUser.type})`,
-                permission: 'basic_commands',
-                description: 'Show current user'
-            },
-
-            'echo': {
-                execute: (args) => args.join(' '),
-                permission: 'basic_commands',
-                description: 'Echo text'
+                });
             }
-        };
 
-        function hasPermission(requiredPermission) {
-            return currentUser.permissions.includes('all') || 
-                   currentUser.permissions.includes(requiredPermission);
-        }
+            updatePerformance() {
+                // Update PnL values with small random changes
+                const pnlElements = document.querySelectorAll('.profit, .loss');
+                pnlElements.forEach(element => {
+                    if (element.textContent.includes('₹')) {
+                        const currentValue = parseFloat(element.textContent.replace('₹', '').replace(',', '').replace('+', '').replace('-', ''));
+                        const change = (Math.random() - 0.3) * 100;
+                        const newValue = Math.max(0, currentValue + change);
+                        
+                        if (newValue >= currentValue) {
+                            element.textContent = `+₹${newValue.toFixed(0)}`;
+                            element.className = 'profit';
+                        } else {
+                            element.textContent = `-₹${newValue.toFixed(0)}`;
+                            element.className = 'loss';
+                        }
+                    }
+                });
+            }
 
-        function addOutputLine(content, type = 'output') {
-            const terminalBody = document.getElementById('terminalBody');
-            const line = document.createElement('div');
-            line.className = `output-line ${type}`;
-            line.innerHTML = content;
-            terminalBody.appendChild(line);
-            scrollToBottom();
-        }
+            simulateTrade() {
+                const strategies = ['Mean Reversion', 'Momentum', 'Breakout', 'Scalping'];
+                const instruments = ['NIFTY', 'BANKNIFTY', 'RELIANCE', 'TCS'];
+                const actions = ['BUY', 'SELL'];
+                
+                const strategy = strategies[Math.floor(Math.random() * strategies.length)];
+                const instrument = instruments[Math.floor(Math.random() * instruments.length)];
+                const action = actions[Math.floor(Math.random() * actions.length)];
+                const price = (Math.random() * 1000 + 21000).toFixed(2);
+                const quantity = Math.floor(Math.random() * 100) + 10;
+                
+                this.addLogEntry('trade', 
+                    `[TRADE] ${action} ${instrument}@${price} | Qty: ${quantity} | Strategy: ${strategy}`
+                );
+            }
 
-        function addInputLine() {
-            const terminalBody = document.getElementById('terminalBody');
-            const inputLine = document.createElement('div');
-            inputLine.className = 'input-line';
-            
-            const promptColor = currentUser.type === 'admin' ? '#ff4444' : '#44ff44';
-            inputLine.innerHTML = `
-                <span class="prompt" style="color: ${promptColor}">
-                    ${currentUser.username}@terminal:~$
-                </span>
-                <input type="text" class="command-input" autofocus>
-            `;
-            
-            terminalBody.appendChild(inputLine);
-            
-            const input = inputLine.querySelector('.command-input');
-            input.addEventListener('keydown', handleKeyPress);
-            input.focus();
-            
-            scrollToBottom();
-        }
-
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') {
-                executeCommand(event.target.value.trim());
-                event.target.value = '';
-            } else if (event.key === 'ArrowUp') {
-                event.preventDefault();
-                navigateHistory(-1);
-            } else if (event.key === 'ArrowDown') {
-                event.preventDefault();
-                navigateHistory(1);
+            addLogEntry(type, message) {
+                const terminalBody = document.querySelector('.terminal-body');
+                
+                const logEntry = document.createElement('div');
+                logEntry.className = 'log-entry';
+                
+                const time = new Date().toLocaleTimeString();
+                logEntry.innerHTML = `
+                    <span class="log-time">${time}</span>
+                    <span class="log-${type}">${message}</span>
+                `;
+                
+                terminalBody.appendChild(logEntry);
+                terminalBody.scrollTop = terminalBody.scrollHeight;
             }
         }
 
-        function executeCommand(commandText) {
-            if (!commandText) return;
+        // Initialize the enhanced terminal
+        document.addEventListener('DOMContentLoaded', () => {
+            new QuantProPlusTerminal();
+        });
 
-            // Add to history
-            commandHistory.push(commandText);
-            historyIndex = commandHistory.length;
-
-            // Display command
-            const promptColor = currentUser.type === 'admin' ? 'admin-command' : 'client-command';
-            addOutputLine(`
-                <span class="prompt" style="color: ${currentUser.type === 'admin' ? '#ff4444' : '#44ff44'}">
-                    ${currentUser.username}@terminal:~$
-                </span>
-                <span class="${promptColor}">${commandText}</span>
-            `);
-
-            // Process command
-            const [command, ...args] = commandText.split(' ');
-            
-            if (commands[command]) {
-                const result = commands[command].execute(args);
-                if (result !== null) {
-                    addOutputLine(result, 'output');
-                }
-            } else {
-                addOutputLine(`Command not found: ${command}. Type 'help' for available commands.`, 'error');
-            }
-
-            addInputLine();
-        }
-
-        function navigateHistory(direction) {
-            if (commandHistory.length === 0) return;
-
-            historyIndex = Math.max(0, Math.min(commandHistory.length, historyIndex + direction));
-            
-            const input = document.querySelector('.command-input');
-            if (input) {
-                input.value = historyIndex === commandHistory.length ? '' : commandHistory[historyIndex];
-            }
-        }
-
-        function scrollToBottom() {
-            const terminalBody = document.getElementById('terminalBody');
-            terminalBody.scrollTop = terminalBody.scrollHeight;
-        }
-
-        // Allow Enter key to submit login form
-        document.getElementById('password').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                login();
-            }
+        // Buy/Sell button functionality
+        document.querySelectorAll('.btn-buy, .btn-sell').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const action = btn.textContent;
+                const symbol = document.querySelector('.param-input[placeholder="Symbol"]').value;
+                const quantity = document.querySelector('.param-input[placeholder="Qty"]').value;
+                
+                alert(`${action} order for ${symbol} (Qty: ${quantity}) placed successfully!`);
+            });
         });
     </script>
 </body>
